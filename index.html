@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><title>Tima</title>
+<style>
+*{box-sizing:border-box}html,body{min-height:100%;margin:0}
+body{background:linear-gradient(160deg,#ffc2e0,#ff9ccb 55%,#ffd1e8);font-family:"Trebuchet MS",Verdana,Arial,sans-serif;color:#6b1f4d;display:flex;align-items:center;justify-content:center;padding:16px;min-height:100vh;min-height:100dvh}
+.card{width:100%;max-width:440px;background:rgba(255,255,255,.92);border-radius:24px;padding:26px 20px;text-align:center;box-shadow:0 8px 28px rgba(150,20,90,.25)}
+.mock{position:fixed;top:0;left:0;right:0;background:#4a1534;color:#fff;font-size:12px;padding:5px 8px;text-align:center;z-index:9}
+body{padding-top:40px}
+button{font:inherit;cursor:pointer}
+#axo{width:200px;max-width:70%;height:auto;animation:b 2.6s ease-in-out infinite;cursor:pointer;-webkit-tap-highlight-color:transparent}
+@keyframes b{50%{transform:translateY(-8px)}}
+@media (prefers-reduced-motion:reduce){#axo{animation:none}}
+h1{font-size:36px;margin:8px 0 4px}p{margin:6px 0;font-size:18px;line-height:1.4}
+.screen{display:none}.screen.on{display:block}
+.dots{display:flex;justify-content:center;gap:14px;margin:14px 0 18px}
+.dots i{width:18px;height:18px;border-radius:50%;border:3px solid #e0508f;display:block}.dots i.f{background:#e0508f}
+.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:270px;margin:0 auto}
+.pad button{height:62px;font-size:26px;border:0;border-radius:18px;background:#ffd6e8;color:#6b1f4d;touch-action:manipulation}
+.pad button:active{background:#ffb3d3}
+.err{color:#b0124f;min-height:24px;font-size:16px}
+.small{font-size:14px;opacity:.8}
+.list{text-align:left;margin:12px 0;max-height:46vh;overflow:auto}
+.m{background:#ffe3f0;border-radius:16px;padding:10px 14px;margin:8px 0;font-size:17px;word-wrap:break-word}
+.m b{display:block;font-size:12px;opacity:.7;font-weight:normal}
+.m.me{background:#ffc2e0}
+form{display:flex;gap:8px}
+input{flex:1;min-width:0;font:inherit;font-size:17px;padding:12px;border:2px solid #ff9ccb;border-radius:14px;color:#6b1f4d}
+.send{border:0;background:#e0508f;color:#fff;border-radius:14px;padding:0 18px;font-size:17px}
+.link{background:none;border:0;color:#6b1f4d;text-decoration:underline;margin-top:12px;font-size:15px}
+</style></head><body>
+<div class="mock">MOCK-UP - dummy messages only - not secured, nothing is saved or sent</div>
+<div class="card">
+<div id="s1" class="screen on">
+<svg id="axo" viewBox="0 0 200 150" role="img" aria-label="A cute pink axolotl">
+<g stroke="#e0508f" stroke-width="5" stroke-linecap="round" fill="none">
+<path d="M52 62 L22 44M52 72 L16 70M54 82 L24 98"/>
+<path d="M148 62 L178 44M148 72 L184 70M146 82 L176 98"/></g>
+<g fill="#ff6fae"><circle cx="22" cy="44" r="7"/><circle cx="16" cy="70" r="7"/><circle cx="24" cy="98" r="7"/>
+<circle cx="178" cy="44" r="7"/><circle cx="184" cy="70" r="7"/><circle cx="176" cy="98" r="7"/></g>
+<ellipse cx="100" cy="82" rx="58" ry="50" fill="#ffb3d3"/>
+<ellipse cx="100" cy="100" rx="38" ry="26" fill="#ffd6e8"/>
+<circle cx="78" cy="74" r="8" fill="#4a1534"/><circle cx="122" cy="74" r="8" fill="#4a1534"/>
+<circle cx="80" cy="71" r="2.6" fill="#fff"/><circle cx="124" cy="71" r="2.6" fill="#fff"/>
+<circle cx="64" cy="92" r="7" fill="#ff8fc0" opacity=".7"/><circle cx="136" cy="92" r="7" fill="#ff8fc0" opacity=".7"/>
+<path d="M88 94 Q100 106 112 94" stroke="#4a1534" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+</svg>
+<h1>Tima</h1><p>Tap the axolotl</p></div>
+<div id="s2" class="screen">
+<h1>Hi Tima</h1><p>Enter your PIN</p>
+<div class="dots" id="dots"><i></i><i></i><i></i><i></i></div>
+<div class="err" id="err" aria-live="polite"></div>
+<div class="pad" id="pad"></div>
+<p class="small">Mock-up: PIN is 1234. The real one will be checked on a server.</p>
+<button class="link" id="back">Back</button></div>
+<div id="s3" class="screen">
+<h1>Messages</h1>
+<div class="list" id="list"></div>
+<form id="f" autocomplete="off"><input id="t" maxlength="140" placeholder="Write one line" aria-label="Message"><button class="send">Send</button></form>
+<p class="small">Mock-up: messages vanish when you reload.</p>
+<button class="link" id="out">Lock</button></div>
+</div>
+<script>
+var PIN="1234",buf="",$=function(i){return document.getElementById(i)};
+function show(n){["s1","s2","s3"].forEach(function(s){$(s).className="screen"+(s==n?" on":"")})}
+var msgs=[{w:"Dad",t:"Dummy message: hello from Dad"},{w:"Tima",t:"Dummy message: hi!"}];
+function draw(){$("list").innerHTML=msgs.slice().reverse().map(function(m){return '<div class="m'+(m.w=="Tima"?" me":"")+'"><b>'+m.w+'</b>'+m.t.replace(/[&<>]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;"}[c]})+'</div>'}).join("")}
+function dots(){var d=$("dots").children;for(var i=0;i<4;i++)d[i].className=i<buf.length?"f":""}
+var keys=["1","2","3","4","5","6","7","8","9","","0","\u232b"];
+keys.forEach(function(k){var b=document.createElement("button");b.textContent=k;b.type="button";if(!k)b.style.visibility="hidden";b.onclick=function(){
+$("err").textContent="";if(k=="\u232b")buf=buf.slice(0,-1);else if(buf.length<4)buf+=k;dots();
+if(buf.length==4){setTimeout(function(){if(buf==PIN){buf="";dots();draw();show("s3")}else{buf="";dots();$("err").textContent="Try again"}},150)}};$("pad").appendChild(b)});
+$("axo").onclick=function(){show("s2")};
+$("axo").setAttribute("tabindex","0");$("axo").setAttribute("role","button");$("axo").onkeydown=function(e){if(e.key=="Enter"||e.key==" ")show("s2")};
+$("back").onclick=function(){buf="";dots();show("s1")};
+$("out").onclick=function(){show("s1")};
+$("f").onsubmit=function(e){e.preventDefault();var v=$("t").value.trim();if(!v)return;msgs.push({w:"Tima",t:v});$("t").value="";draw()};
+</script></body></html>
